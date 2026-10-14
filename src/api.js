@@ -1,5 +1,8 @@
 const KEY = 'attendance_auth';
 
+// Use VITE_API_URL in production (e.g., https://your-backend.onrender.com), fallback to relative URL for local dev
+const API_BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+
 export const getAuth = () => {
   try { return JSON.parse(localStorage.getItem(KEY)); } catch { return null; }
 };
@@ -8,7 +11,7 @@ export const clearAuth = () => localStorage.removeItem(KEY);
 
 async function request(method, path, body) {
   const auth = getAuth();
-  const res = await fetch('/api' + path, {
+  const res = await fetch(`${API_BASE_URL}/api${path}`, {
     method,
     headers: {
       'Content-Type': 'application/json',
